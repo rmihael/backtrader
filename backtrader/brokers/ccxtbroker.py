@@ -63,12 +63,16 @@ class CCXTBroker(BrokerBase):
         self.currency = currency
 
         self.notifs = queue.Queue()  # holds orders which are notified
+        self.startingcash = self.cash = 0.0
+        self.startingvalue = self.value = 0.0
 
     def getcash(self):
-        return self.exchange.fetch_balance()['free'][self.currency]
+        self.cash = self.exchange.fetch_balance()['free'][self.currency]
+        return self.cash
 
     def getvalue(self):
-        return self.exchange.fetch_balance()['total'][self.currency]
+        self.value = self.exchange.fetch_balance()['total'][self.currency]
+        return self.value
 
     def get_notification(self):
         try:
